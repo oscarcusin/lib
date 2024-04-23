@@ -33,6 +33,16 @@ bitset * bitset_new_filled(size_t size) {
     return bs;
 }
 
+bitset * bitset_copy(bitset * bs)  {
+    if (!bs) return NULL;
+    size_t elems = (bs->size - 1) / (sizeof(bitset_data_t) * CHAR_BIT) + 1;
+    bitset * copy = malloc(sizeof(bitset) + elems * sizeof(bitset_data_t));
+    if (!copy) return NULL;
+    memcpy(copy->data, bs->data, elems * sizeof(bitset_data_t));
+    copy->size = bs->size;
+    return copy;
+}
+
 void bitset_free(bitset * bs) {
     if (!bs) return;
     free(bs);
